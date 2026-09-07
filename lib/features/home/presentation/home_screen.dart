@@ -50,7 +50,36 @@ class HomeScreen extends ConsumerWidget {
             icon: const Icon(Icons.search_rounded),
             tooltip: 'Buscar contenido',
           ),
-          const SizedBox(width: 4),
+          if (activeProfile != null)
+            PopupMenuButton<String>(
+              tooltip: 'Perfil activo',
+              onSelected: (value) async {
+                if (value == 'manage') {
+                  if (context.mounted) context.push(AppRoutes.profiles);
+                  return;
+                }
+                await ref.read(profilesNotifierProvider.notifier).setActiveProfile(value);
+              },
+              itemBuilder: (_) {
+                final profiles = ref.read(profilesNotifierProvider).profiles;
+                return [
+                  ...profiles.map((profile) => PopupMenuItem<String>(
+                    value: profile.id,
+                    child: Row(children: [Icon(profile.isProtected ? Icons.lock_outline : Icons.person_outline, size: 20), const SizedBox(width: 10), Text(profile.name)]),
+                  )),
+                  const PopupMenuDivider(),
+                  const PopupMenuItem<String>(value: 'manage', child: Text('Administrar perfiles')),
+                ];
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: CircleAvatar(
+                  radius: 17,
+                  backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+                  child: Text(activeProfile.name.characters.first.toUpperCase()),
+                ),
+              ),
+            ),
         ],
       ),
       body: permissionState.when(
@@ -139,8 +168,6 @@ class HomeScreen extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _TopQuickAccessBar(),
-                    const SizedBox(height: 16),
                     const RecentMediaSection(),
                     const SizedBox(height: 16),
                     const CollectionsSection(),

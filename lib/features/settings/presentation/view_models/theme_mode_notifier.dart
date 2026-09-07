@@ -5,6 +5,14 @@ import 'package:shared_preferences/shared_preferences.dart';
 final appThemeModeProvider = NotifierProvider<ThemeModeNotifier, ThemeMode>(
   ThemeModeNotifier.new,
 );
+final appLocaleProvider = NotifierProvider<LocaleNotifier, Locale>(LocaleNotifier.new);
+
+class LocaleNotifier extends Notifier<Locale> {
+  @override
+  Locale build() { _load(); return const Locale('es'); }
+  void setLanguage(String language) { state = Locale(language); SharedPreferences.getInstance().then((p) => p.setString('app.language', language)); }
+  Future<void> _load() async { final p = await SharedPreferences.getInstance(); state = Locale(p.getString('app.language') ?? 'es'); }
+}
 
 class ThemeModeNotifier extends Notifier<ThemeMode> {
   @override

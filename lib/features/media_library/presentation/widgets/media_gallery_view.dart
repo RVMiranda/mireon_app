@@ -85,7 +85,10 @@ class _MediaGalleryViewState extends ConsumerState<MediaGalleryView> {
         }
 
         if (galleryState.items.isEmpty) {
-          return const Center(child: Text('No se encontraron elementos.'));
+          return _EmptyLibrary(
+            filter: widget.filter,
+            onRefresh: galleryNotifier.refresh,
+          );
         }
 
         return Stack(
@@ -348,6 +351,34 @@ class _PermissionInfo extends StatelessWidget {
             Text(title, textAlign: TextAlign.center),
             const SizedBox(height: 12),
             FilledButton(onPressed: onPressed, child: Text(buttonLabel)),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _EmptyLibrary extends StatelessWidget {
+  const _EmptyLibrary({required this.filter, required this.onRefresh});
+  final MediaFilter filter;
+  final Future<void> Function() onRefresh;
+
+  @override
+  Widget build(BuildContext context) {
+    final isVideos = filter == MediaFilter.videos;
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(28),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(isVideos ? Icons.video_library_outlined : Icons.photo_library_outlined, size: 56),
+            const SizedBox(height: 16),
+            Text(isVideos ? 'Aún no hay vídeos' : 'Aún no hay fotos', style: Theme.of(context).textTheme.titleLarge),
+            const SizedBox(height: 8),
+            Text(isVideos ? 'Los vídeos disponibles en tu dispositivo aparecerán aquí.' : 'Las fotos disponibles en tu dispositivo aparecerán aquí.', textAlign: TextAlign.center),
+            const SizedBox(height: 18),
+            OutlinedButton.icon(onPressed: onRefresh, icon: const Icon(Icons.refresh), label: const Text('Actualizar biblioteca')),
           ],
         ),
       ),

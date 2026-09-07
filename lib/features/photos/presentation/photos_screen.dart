@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import '../../../app/router/app_routes.dart';
 
 import '../../media_library/domain/entities/media_filter.dart';
 import '../../media_library/presentation/view_models/media_gallery_notifier.dart';
@@ -31,6 +33,12 @@ class PhotosScreen extends ConsumerWidget {
               : 'Fotos',
         ),
         actions: [
+          if (!selectionState.isSelectionMode)
+            PopupMenuButton<String>(
+              tooltip: 'Cambiar biblioteca',
+              onSelected: (value) => context.go(value == 'videos' ? AppRoutes.videos : AppRoutes.photos),
+              itemBuilder: (_) => const [PopupMenuItem(value: 'photos', child: Text('Fotos')), PopupMenuItem(value: 'videos', child: Text('Vídeos'))],
+            ),
           if (selectionState.isSelectionMode) ...[
             IconButton(
               icon: Icon(

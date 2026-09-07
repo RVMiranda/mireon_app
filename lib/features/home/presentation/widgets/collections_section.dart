@@ -17,6 +17,19 @@ class CollectionsSection extends ConsumerWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Row(
+            children: [
+              Expanded(child: _CollectionAction(icon: Icons.photo_album_outlined, label: 'Álbumes', onTap: () => context.push(AppRoutes.albums))),
+              const SizedBox(width: 8),
+              Expanded(child: _CollectionAction(icon: Icons.favorite_outline, label: 'Favoritos', onTap: () => context.go(AppRoutes.favorites))),
+              const SizedBox(width: 8),
+              Expanded(child: _CollectionAction(icon: Icons.folder_outlined, label: 'Archivos', onTap: () => context.push(AppRoutes.files))),
+            ],
+          ),
+        ),
+        const SizedBox(height: 16),
+        Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -156,4 +169,24 @@ class CollectionsSection extends ConsumerWidget {
       ],
     );
   }
+}
+
+class _CollectionAction extends StatelessWidget {
+  const _CollectionAction({required this.icon, required this.label, required this.onTap});
+  final IconData icon;
+  final String label;
+  final VoidCallback onTap;
+  @override
+  Widget build(BuildContext context) => Material(
+    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+    borderRadius: BorderRadius.circular(14),
+    child: InkWell(
+      borderRadius: BorderRadius.circular(14),
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 12),
+        child: Column(children: [Icon(icon, size: 21), const SizedBox(height: 4), Text(label, style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w600))]),
+      ),
+    ),
+  );
 }
