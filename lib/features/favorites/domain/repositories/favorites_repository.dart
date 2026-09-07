@@ -4,4 +4,6 @@ abstract interface class FavoritesRepository {
   Future<bool> isFavorite(String mediaId, {String? profileId});
 
   Future<void> setFavorite(String mediaId, bool isFavorite, {String? profileId});
+
+  Future<void> reconcile(Set<String> availableIds, {String? profileId});
 }

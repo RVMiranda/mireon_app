@@ -36,6 +36,9 @@ class SecureProfilesRepository implements ProfilesRepository {
     colorValue: p['colorValue'] as int,
     createdAt: DateTime.parse(p['createdAt'] as String),
     isProtected: p['credential'] != null,
+    allowedMediaIds: ((p['allowedMediaIds'] as List?) ?? const []).cast<String>().toSet(),
+    allowedAlbumIds: ((p['allowedAlbumIds'] as List?) ?? const []).cast<String>().toSet(),
+    hideFromGeneralLibrary: p['hideFromGeneralLibrary'] == true,
   );
 
   @override
@@ -122,6 +125,9 @@ class SecureProfilesRepository implements ProfilesRepository {
       'credential': secret == null ? null : await hasher.hash(secret),
       'attempts': 0,
       'retryAt': 0,
+      'allowedMediaIds': <String>[],
+      'allowedAlbumIds': <String>[],
+      'hideFromGeneralLibrary': false,
     };
     (catalog['profiles'] as List).add(entry);
     catalog['activeId'] ??= id;

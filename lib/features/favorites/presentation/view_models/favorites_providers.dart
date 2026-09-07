@@ -67,6 +67,12 @@ final favoriteMediaItemsProvider = FutureProvider<List<MediaItem>>((ref) async {
   final getById = ref.watch(getMediaByIdUseCaseProvider);
   final results = await Future.wait(ids.map(getById.call));
   final items = results.whereType<MediaItem>().toList(growable: false);
+  final resolvedIds = items.map((item) => item.id).toSet();
+  final profileId = ref.read(profilesNotifierProvider).activeProfile?.id;
+  await ref.read(favoritesRepositoryProvider).reconcile(
+    resolvedIds,
+    profileId: profileId,
+  );
 
   final sorted = List<MediaItem>.of(items)
     ..sort((a, b) => b.createdAt.compareTo(a.createdAt));

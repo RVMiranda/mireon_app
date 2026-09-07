@@ -47,6 +47,8 @@ class PlaybackFake implements VideoPlayback {
   @override
   Future<void> setVolume(double volume) async {}
   @override
+  Future<void> setLooping(bool looping) async {}
+  @override
   Future<void> toggleMute() async {}
 }
 

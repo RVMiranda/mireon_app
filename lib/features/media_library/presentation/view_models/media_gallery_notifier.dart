@@ -4,6 +4,8 @@ import '../../domain/entities/media_filter.dart';
 import '../../domain/entities/media_item.dart';
 import '../../domain/use_cases/fetch_media_page_use_case.dart';
 import 'media_library_providers.dart';
+import '../../../profiles/presentation/view_models/profiles_providers.dart';
+import '../../../profiles/domain/entities/user_profile.dart';
 
 final mediaGalleryProvider = StateNotifierProvider.autoDispose
     .family<MediaGalleryNotifier, MediaGalleryState, MediaFilter>((
@@ -11,14 +13,16 @@ final mediaGalleryProvider = StateNotifierProvider.autoDispose
       filter,
     ) {
       ref.watch(mediaLibraryRevisionProvider);
+      final profile = ref.watch(profilesNotifierProvider).activeProfile;
       return MediaGalleryNotifier(
         filter: filter,
         fetchMediaPage: ref.watch(fetchMediaPageUseCaseProvider),
+        visibility: profile,
       );
     });
 
 class MediaGalleryNotifier extends StateNotifier<MediaGalleryState> {
-  MediaGalleryNotifier({required this.filter, required this.fetchMediaPage})
+  MediaGalleryNotifier({required this.filter, required this.fetchMediaPage, this.visibility})
     : super(const MediaGalleryState()) {
     _loadInitial();
   }
@@ -27,6 +31,11 @@ class MediaGalleryNotifier extends StateNotifier<MediaGalleryState> {
 
   final MediaFilter filter;
   final FetchMediaPageUseCase fetchMediaPage;
+  final UserProfile? visibility;
+
+  List<MediaItem> _visible(List<MediaItem> items) => visibility == null
+      ? items
+      : items.where((item) => visibility!.allowsMedia(item.id)).toList(growable: false);
 
   Future<void> refresh() async {
     state = state.copyWith(isRefreshing: true, errorMessage: null);
@@ -63,7 +72,7 @@ class MediaGalleryNotifier extends StateNotifier<MediaGalleryState> {
         pageSize: _pageSize,
       );
 
-      final merged = List<MediaItem>.of(state.items)..addAll(page.items);
+      final merged = List<MediaItem>.of(state.items)..addAll(_visible(page.items));
 
       state = state.copyWith(
         items: merged,
@@ -99,7 +108,7 @@ class MediaGalleryNotifier extends StateNotifier<MediaGalleryState> {
       state = state.copyWith(
         isLoading: false,
         isRefreshing: false,
-        items: page.items,
+        items: _visible(page.items),
         totalCount: page.totalCount,
         currentPage: 0,
         hasMore: page.items.length < page.totalCount,

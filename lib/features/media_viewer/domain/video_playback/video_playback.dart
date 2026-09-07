@@ -11,6 +11,7 @@ abstract interface class VideoPlayback {
   Future<void> pause();
   Future<void> seekTo(Duration position);
   Future<void> setVolume(double volume);
+  Future<void> setLooping(bool looping);
   Future<void> toggleMute();
 
   /// Releases any underlying platform resources (player instance, textures, etc)

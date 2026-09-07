@@ -206,6 +206,13 @@ class VideoPlayerVideoPlayback implements VideoPlayback {
   }
 
   @override
+  Future<void> setLooping(bool looping) async {
+    final controller = _controller;
+    if (_disposed || controller == null) return;
+    await controller.setLooping(looping);
+  }
+
+  @override
   Future<void> toggleMute() async {
     final controller = _controller;
     if (_disposed || controller == null) {

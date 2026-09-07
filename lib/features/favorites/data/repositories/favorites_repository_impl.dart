@@ -44,4 +44,15 @@ class FavoritesRepositoryImpl implements FavoritesRepository {
     _cacheByProfile[key] = all;
     await dataSource.save(all, profileId: profileId);
   }
+
+  @override
+  Future<void> reconcile(Set<String> availableIds, {String? profileId}) async {
+    final key = _cacheKey(profileId);
+    final all = await getAll(profileId: profileId);
+    final stale = all.difference(availableIds);
+    if (stale.isEmpty) return;
+    all.removeAll(stale);
+    _cacheByProfile[key] = all;
+    await dataSource.save(all, profileId: profileId);
+  }
 }

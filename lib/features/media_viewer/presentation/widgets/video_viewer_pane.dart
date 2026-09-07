@@ -11,6 +11,7 @@ import 'package:mireon/features/media_library/presentation/view_models/media_lib
 import 'package:mireon/core/platform/providers/device_controls_providers.dart';
 import 'package:mireon/core/platform/system_ui/system_ui_service.dart';
 import 'package:mireon/features/media_viewer/presentation/view_models/video_playback_providers.dart';
+import 'package:mireon/features/media_viewer/presentation/view_models/playback_preferences_notifier.dart';
 import 'package:mireon/features/media_viewer/presentation/widgets/conditional_horizontal_drag_gesture_recognizer.dart';
 import 'package:mireon/features/media_viewer/presentation/widgets/gesture_feedback_overlay.dart';
 import 'package:mireon/features/media_viewer/presentation/widgets/seek_feedback_overlay.dart';
@@ -158,6 +159,9 @@ class _VideoViewerPaneState extends ConsumerState<VideoViewerPane>
     _gestures.activate();
     try {
       await _session.activate(widget.item.id);
+      final preferences = ref.read(playbackPreferencesProvider);
+      await _playback.setLooping(preferences.repeat);
+      if (!preferences.autoplay) await _playback.pause();
     } catch (_) {
       await _session.deactivate();
     }
@@ -280,7 +284,8 @@ class _VideoViewerPaneState extends ConsumerState<VideoViewerPane>
 
             final overlayType = _gestures.overlayType;
             final overlayLevel = _gestures.overlayLevel;
-            final enableDeviceGestures = !_isZoomed;
+            final enableDeviceGestures = !_isZoomed &&
+                ref.read(playbackPreferencesProvider).gesturesEnabled;
             final isEnded =
                 value.position >= value.duration &&
                 value.duration > Duration.zero;
