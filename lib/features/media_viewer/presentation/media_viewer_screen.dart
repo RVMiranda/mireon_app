@@ -197,21 +197,6 @@ class _MediaViewerScreenState extends ConsumerState<MediaViewerScreen> {
                     ),
                   ),
                 ),
-                if (current.type == MediaType.video)
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: const EdgeInsets.only(bottom: 16),
-                      child: AnimatedOpacity(
-                        duration: const Duration(milliseconds: 180),
-                        opacity: viewerState.controlsVisible ? 1 : 0,
-                        child: const Text(
-                          'Bordes: cambiar. Centro: seek. Pinch: zoom. Doble tap: reset.',
-                          style: TextStyle(color: Colors.white70, fontSize: 12),
-                        ),
-                      ),
-                    ),
-                  ),
                 if (_modeOverlayIcon != null && _modeOverlayText != null)
                   ModeFeedbackOverlay(
                     icon: _modeOverlayIcon!,

@@ -11,15 +11,16 @@ class SettingsScreen extends ConsumerWidget {
     final locale = ref.watch(appLocaleProvider);
     final playback = ref.watch(playbackPreferencesProvider);
     final prefs = ref.read(playbackPreferencesProvider.notifier);
+    final english = locale.languageCode == 'en';
     return Scaffold(
-      appBar: AppBar(title: const Text('Ajustes')),
+      appBar: AppBar(title: Text(english ? 'Settings' : 'Ajustes')),
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
-          _section(context, 'Apariencia', Icons.palette_outlined, [
+          _section(context, english ? 'Appearance' : 'Apariencia', Icons.palette_outlined, [
             ListTile(
-              title: const Text('Idioma'),
-              subtitle: const Text('Selecciona el idioma de la interfaz'),
+              title: Text(english ? 'Language' : 'Idioma'),
+              subtitle: Text(english ? 'Choose the interface language' : 'Selecciona el idioma de la interfaz'),
               trailing: DropdownButton<Locale>(
                 value: locale,
                 items: const [DropdownMenuItem(value: Locale('es'), child: Text('Español')), DropdownMenuItem(value: Locale('en'), child: Text('English'))],
@@ -36,13 +37,13 @@ class SettingsScreen extends ConsumerWidget {
               onSelectionChanged: (value) => ref.read(appThemeModeProvider.notifier).setThemeMode(value.first),
             ),
           ]),
-          _section(context, 'Reproducción', Icons.play_circle_outline, [
-            SwitchListTile(title: const Text('Reproducción automática'), value: playback.autoplay, onChanged: (value) => prefs.update(autoplay: value)),
-            SwitchListTile(title: const Text('Repetir vídeos'), value: playback.repeat, onChanged: (value) => prefs.update(repeat: value)),
+          _section(context, english ? 'Playback' : 'Reproducción', Icons.play_circle_outline, [
+            SwitchListTile(title: Text(english ? 'Autoplay' : 'Reproducción automática'), value: playback.autoplay, onChanged: (value) => prefs.update(autoplay: value)),
+            SwitchListTile(title: Text(english ? 'Loop videos' : 'Repetir vídeos'), value: playback.repeat, onChanged: (value) => prefs.update(repeat: value)),
           ]),
-          _section(context, 'Gestos', Icons.gesture, [
-            SwitchListTile(title: const Text('Activar gestos'), value: playback.gesturesEnabled, onChanged: (value) => prefs.update(gesturesEnabled: value)),
-            ListTile(title: const Text('Sensibilidad'), subtitle: Slider(value: playback.gestureSensitivity, min: 0.5, max: 2, divisions: 6, onChanged: (value) => prefs.update(gestureSensitivity: value))),
+          _section(context, english ? 'Gestures' : 'Gestos', Icons.gesture, [
+            SwitchListTile(title: Text(english ? 'Enable gestures' : 'Activar gestos'), value: playback.gesturesEnabled, onChanged: (value) => prefs.update(gesturesEnabled: value)),
+            ListTile(title: Text(english ? 'Sensitivity' : 'Sensibilidad'), subtitle: Slider(value: playback.gestureSensitivity, min: 0.5, max: 2, divisions: 6, onChanged: (value) => prefs.update(gestureSensitivity: value))),
           ]),
           _section(context, 'Biblioteca y privacidad', Icons.photo_library_outlined, [
             const ListTile(title: Text('Permisos y acceso limitado'), subtitle: Text('Gestiona qué contenido puede ver Mireon')),

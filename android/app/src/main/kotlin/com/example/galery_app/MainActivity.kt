@@ -1,4 +1,4 @@
-﻿package com.example.galery_app
+package com.mireon.privatemedia
 
 import android.os.Bundle
 import android.view.WindowManager
@@ -10,4 +10,3 @@ class MainActivity : FlutterActivity() {
         super.onCreate(savedInstanceState)
     }
 }
-
