@@ -9,11 +9,10 @@ import '../../features/home/presentation/home_screen.dart';
 import '../../features/media_viewer/presentation/media_viewer_screen.dart';
 import '../../features/media_viewer/presentation/models/media_viewer_args.dart';
 import '../../features/onboarding/presentation/onboarding_screen.dart';
-import '../../features/photos/presentation/photos_screen.dart';
 import '../../features/profiles/presentation/profiles_screen.dart';
 import '../../features/profiles/presentation/view_models/profiles_providers.dart';
 import '../../features/settings/presentation/settings_screen.dart';
-import '../../features/videos/presentation/videos_screen.dart';
+import '../../features/media_library/presentation/library_screen.dart';
 import 'app_routes.dart';
 
 final appRouterProvider = Provider<GoRouter>((ref) {
@@ -57,18 +56,9 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           StatefulShellBranch(
             routes: [
               GoRoute(
-                path: AppRoutes.photos,
+                path: AppRoutes.library,
                 pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: PhotosScreen()),
-              ),
-            ],
-          ),
-          StatefulShellBranch(
-            routes: [
-              GoRoute(
-                path: AppRoutes.videos,
-                pageBuilder: (context, state) =>
-                    const NoTransitionPage(child: VideosScreen()),
+                    const NoTransitionPage(child: LibraryScreen()),
               ),
             ],
           ),
@@ -154,12 +144,7 @@ class AppNavigationShell extends StatelessWidget {
           NavigationDestination(
             icon: Icon(Icons.photo_library_outlined),
             selectedIcon: Icon(Icons.photo_library),
-            label: 'Fotos',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.video_library_outlined),
-            selectedIcon: Icon(Icons.video_library),
-            label: 'Videos',
+            label: 'Biblioteca',
           ),
           NavigationDestination(
             icon: Icon(Icons.favorite_outline),

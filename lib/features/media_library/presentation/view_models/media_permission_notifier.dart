@@ -26,11 +26,15 @@ class MediaPermissionNotifier extends AsyncNotifier<bool> {
   Future<void> requestAccess() async {
     state = const AsyncLoading<bool>();
     state = await AsyncValue.guard(_requestPermission.call);
+    ref.invalidate(mediaAccessProvider);
+    ref.read(mediaLibraryRevisionProvider.notifier).state++;
   }
 
   Future<void> refreshStatus() async {
     state = const AsyncLoading<bool>();
     state = await AsyncValue.guard(_hasPermission.call);
+    ref.invalidate(mediaAccessProvider);
+    ref.read(mediaLibraryRevisionProvider.notifier).state++;
   }
 
   Future<void> manageLimitedAccess(MediaFilter filter) async {

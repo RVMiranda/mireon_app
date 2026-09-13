@@ -11,13 +11,14 @@ import '../view_models/media_gallery_notifier.dart';
 import '../view_models/media_library_providers.dart';
 
 class MediaSearchDelegate extends SearchDelegate<MediaItem?> {
-  MediaSearchDelegate({required this.ref})
+  MediaSearchDelegate({required this.ref, this.filter = MediaFilter.all})
     : super(
         searchFieldLabel: 'Buscar fotos o videos...',
         keyboardType: TextInputType.text,
       );
 
   final WidgetRef ref;
+  final MediaFilter filter;
 
   @override
   List<Widget>? buildActions(BuildContext context) {
@@ -54,7 +55,7 @@ class MediaSearchDelegate extends SearchDelegate<MediaItem?> {
   }
 
   Widget _buildSearchResults(BuildContext context) {
-    final galleryState = ref.watch(mediaGalleryProvider(MediaFilter.all));
+    final galleryState = ref.watch(mediaGalleryProvider(filter));
     final items = galleryState.items;
 
     if (galleryState.isLoading && items.isEmpty) {

@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace = "com.mireon.privatemedia"
-    compileSdk = flutter.compileSdkVersion
+    // file_picker y flutter_plugin_android_lifecycle requieren Android API 36.
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

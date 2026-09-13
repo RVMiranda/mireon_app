@@ -8,6 +8,8 @@ import '../../media_library/presentation/view_models/media_gallery_notifier.dart
 import '../../media_library/presentation/view_models/media_selection_notifier.dart';
 import '../../media_library/presentation/widgets/media_gallery_view.dart';
 import '../../media_library/presentation/widgets/selection_action_bar.dart';
+import '../../media_library/presentation/widgets/media_search_delegate.dart';
+import '../../profiles/presentation/widgets/profile_switcher.dart';
 
 class PhotosScreen extends ConsumerWidget {
   const PhotosScreen({super.key});
@@ -33,6 +35,10 @@ class PhotosScreen extends ConsumerWidget {
               : 'Fotos',
         ),
         actions: [
+          if (!selectionState.isSelectionMode)
+            const ProfileSwitcher(),
+          if (!selectionState.isSelectionMode)
+            IconButton(icon: const Icon(Icons.search), tooltip: 'Buscar fotos', onPressed: () => showSearch(context: context, delegate: MediaSearchDelegate(ref: ref, filter: MediaFilter.photos))),
           if (!selectionState.isSelectionMode)
             PopupMenuButton<String>(
               tooltip: 'Cambiar biblioteca',
@@ -76,7 +82,10 @@ class PhotosScreen extends ConsumerWidget {
       ),
       body: Stack(
         children: [
-          const MediaGalleryView(filter: MediaFilter.photos),
+          Column(children: [
+            _LibraryTabs(selected: 0),
+            const Expanded(child: MediaGalleryView(filter: MediaFilter.photos)),
+          ]),
           Align(
             alignment: Alignment.bottomCenter,
             child: SelectionActionBar(
@@ -87,4 +96,11 @@ class PhotosScreen extends ConsumerWidget {
       ),
     );
   }
+}
+
+class _LibraryTabs extends StatelessWidget {
+  const _LibraryTabs({required this.selected});
+  final int selected;
+  @override
+  Widget build(BuildContext context) => Padding(padding: const EdgeInsets.fromLTRB(16, 8, 16, 4), child: SegmentedButton<int>(segments: const [ButtonSegment(value: 0, label: Text('Fotos')), ButtonSegment(value: 1, label: Text('Vídeos'))], selected: {selected}, onSelectionChanged: (v) => context.go(v.first == 0 ? AppRoutes.photos : AppRoutes.videos)));
 }

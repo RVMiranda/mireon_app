@@ -19,12 +19,14 @@ dependencies:
   volume_controller: ^3.6.0
   audio_session: ^0.2.4
   shared_preferences: ^2.3.2
-  share_plus: ^10.1.2
+  share_plus: ^13.3.0
   open_filex: ^4.7.0
   crypto: ^3.0.6
   cryptography: ^2.9.0
   flutter_secure_storage: 10.0.0
   path_provider: ^2.1.4
+  file_picker: ^12.3.0
+  archive: ^3.6.1
 
 dev_dependencies:
   flutter_test:
