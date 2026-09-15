@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../features/albums/presentation/albums_screen.dart';
 import '../../features/favorites/presentation/favorites_screen.dart';
@@ -135,25 +136,25 @@ class AppNavigationShell extends StatelessWidget {
             initialLocation: index == navigationShell.currentIndex,
           );
         },
-        destinations: const [
+        destinations: [
           NavigationDestination(
-            icon: Icon(Icons.dashboard_outlined),
-            selectedIcon: Icon(Icons.dashboard),
+            icon: SvgPicture.asset('resources/widget-5-svgrepo-com.svg'),
+            selectedIcon: SvgPicture.asset('resources/widget-5-svgrepo-com.svg'),
             label: 'Inicio',
           ),
           NavigationDestination(
-            icon: Icon(Icons.photo_library_outlined),
-            selectedIcon: Icon(Icons.photo_library),
+            icon: SvgPicture.asset('resources/album-svgrepo-com.svg'),
+            selectedIcon: SvgPicture.asset('resources/album-svgrepo-com.svg'),
             label: 'Biblioteca',
           ),
           NavigationDestination(
-            icon: Icon(Icons.favorite_outline),
-            selectedIcon: Icon(Icons.favorite),
+            icon: SvgPicture.asset('resources/heart-angle-svgrepo-com.svg'),
+            selectedIcon: SvgPicture.asset('resources/heart-angle-svgrepo-com.svg'),
             label: 'Favoritos',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings_outlined),
-            selectedIcon: Icon(Icons.settings),
+            icon: SvgPicture.asset('resources/tuning-square-2-svgrepo-com.svg'),
+            selectedIcon: SvgPicture.asset('resources/tuning-square-2-svgrepo-com.svg'),
             label: 'Ajustes',
           ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../domain/entities/user_profile.dart';
 
 class ActiveProfileCard extends StatelessWidget {
@@ -25,11 +26,7 @@ class ActiveProfileCard extends StatelessWidget {
               color: Color(profile.colorValue),
               shape: BoxShape.circle,
             ),
-            child: Icon(
-              _getIcon(profile.iconName),
-              color: Colors.white,
-              size: 28,
-            ),
+            child: _avatar(profile.iconName, Colors.white, 28),
           ),
           const SizedBox(width: 16),
           Expanded(
@@ -99,6 +96,12 @@ class ActiveProfileCard extends StatelessWidget {
       _ => Icons.person_rounded,
     };
   }
+
+  static Widget _avatar(String name, Color color, double size) {
+    const paths = <String, String>{'atom':'resources/profile/atom-svgrepo-com.svg','ghost':'resources/profile/ghost-smile-svgrepo-com.svg','incognito':'resources/profile/incognito-svgrepo-com.svg','masks':'resources/profile/masks-svgrepo-com.svg','meditation':'resources/profile/meditation-round-svgrepo-com.svg','rocket':'resources/profile/rocket-2-svgrepo-com.svg','smile':'resources/profile/smile-square-svgrepo-com.svg','gameboy':'resources/profile/gameboy-svgrepo-com.svg','face':'resources/profile/face-scan-square-svgrepo-com.svg','balls':'resources/profile/balls-svgrepo-com.svg','emoji':'resources/profile/emoji-funny-square-svgrepo-com.svg','person':'resources/profile/user-svgrepo-com.svg'};
+    final path = paths[name];
+    return path == null ? Icon(_getIcon(name), color: color, size: size) : SvgPicture.asset(path, width: size, height: size, colorFilter: ColorFilter.mode(color, BlendMode.srcIn));
+  }
 }
 
 class ProfileListTile extends StatelessWidget {
@@ -137,11 +140,7 @@ class ProfileListTile extends StatelessWidget {
                   color: Color(profile.colorValue),
                   shape: BoxShape.circle,
                 ),
-                child: Icon(
-                  ActiveProfileCard._getIcon(profile.iconName),
-                  color: Colors.white,
-                  size: 20,
-                ),
+                child: ActiveProfileCard._avatar(profile.iconName, Colors.white, 20),
               ),
               const SizedBox(width: 14),
               Expanded(

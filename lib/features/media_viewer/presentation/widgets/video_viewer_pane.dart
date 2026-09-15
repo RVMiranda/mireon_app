@@ -19,6 +19,7 @@ import 'package:mireon/features/media_viewer/presentation/widgets/video_surface.
 
 import 'package:mireon/features/media_viewer/presentation/widgets/video_controls.dart';
 import 'package:mireon/features/media_viewer/presentation/widgets/video_first_time_guide_dialog.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class VideoViewerPane extends ConsumerStatefulWidget {
   const VideoViewerPane({
@@ -156,6 +157,7 @@ class _VideoViewerPaneState extends ConsumerState<VideoViewerPane>
   }
 
   Future<void> _initVideo() async {
+    await WakelockPlus.enable();
     _gestures.activate();
     try {
       await _session.activate(widget.item.id);
@@ -168,6 +170,7 @@ class _VideoViewerPaneState extends ConsumerState<VideoViewerPane>
   }
 
   Future<void> _releaseVideo() async {
+    await WakelockPlus.disable();
     _gestureAction(_gestures.deactivate());
     _transformController.value = Matrix4.identity();
     _lastZoomed = false;

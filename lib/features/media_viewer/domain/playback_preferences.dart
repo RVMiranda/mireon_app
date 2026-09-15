@@ -7,6 +7,7 @@ class PlaybackPreferences {
     this.gesturesEnabled = true,
     this.gestureSensitivity = 1.0,
     this.themeMode = ThemeMode.system,
+    this.controlsAutoHideSeconds = 5,
   });
 
   final bool autoplay;
@@ -14,6 +15,7 @@ class PlaybackPreferences {
   final bool gesturesEnabled;
   final double gestureSensitivity;
   final ThemeMode themeMode;
+  final int? controlsAutoHideSeconds;
 
   PlaybackPreferences copyWith({
     bool? autoplay,
@@ -21,11 +23,13 @@ class PlaybackPreferences {
     bool? gesturesEnabled,
     double? gestureSensitivity,
     ThemeMode? themeMode,
+    int? controlsAutoHideSeconds,
   }) => PlaybackPreferences(
     autoplay: autoplay ?? this.autoplay,
     repeat: repeat ?? this.repeat,
     gesturesEnabled: gesturesEnabled ?? this.gesturesEnabled,
     gestureSensitivity: gestureSensitivity ?? this.gestureSensitivity,
     themeMode: themeMode ?? this.themeMode,
+    controlsAutoHideSeconds: controlsAutoHideSeconds ?? this.controlsAutoHideSeconds,
   );
 }

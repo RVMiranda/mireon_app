@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../../app/router/app_routes.dart';
@@ -22,7 +23,7 @@ class HomeScreen extends ConsumerWidget {
     } else if (hour >= 12 && hour < 19) {
       return 'Buenas tardes, $name';
     } else {
-      return 'Gran noche, $name';
+      return 'Linda noche, $name';
     }
   }
 
@@ -47,7 +48,7 @@ class HomeScreen extends ConsumerWidget {
                 delegate: MediaSearchDelegate(ref: ref),
               );
             },
-            icon: const Icon(Icons.search_rounded),
+            icon: SvgPicture.asset('resources/rounded-magnifer-svgrepo-com.svg', colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
             tooltip: 'Buscar contenido',
           ),
           if (activeProfile != null)

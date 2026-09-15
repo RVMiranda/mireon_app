@@ -40,6 +40,7 @@ class SettingsScreen extends ConsumerWidget {
           _section(context, english ? 'Playback' : 'Reproducción', Icons.play_circle_outline, [
             SwitchListTile(title: Text(english ? 'Autoplay' : 'Reproducción automática'), value: playback.autoplay, onChanged: (value) => prefs.update(autoplay: value)),
             SwitchListTile(title: Text(english ? 'Loop videos' : 'Repetir vídeos'), value: playback.repeat, onChanged: (value) => prefs.update(repeat: value)),
+            ListTile(title: Text(english ? 'Hide controls after' : 'Ocultar controles después de'), trailing: DropdownButton<int?>(value: playback.controlsAutoHideSeconds, items: const [DropdownMenuItem(value: 3, child: Text('3 s')), DropdownMenuItem(value: 5, child: Text('5 s')), DropdownMenuItem(value: 10, child: Text('10 s')), DropdownMenuItem(value: null, child: Text('Manual'))], onChanged: prefs.setControlsAutoHide)),
           ]),
           _section(context, english ? 'Gestures' : 'Gestos', Icons.gesture, [
             SwitchListTile(title: Text(english ? 'Enable gestures' : 'Activar gestos'), value: playback.gesturesEnabled, onChanged: (value) => prefs.update(gesturesEnabled: value)),

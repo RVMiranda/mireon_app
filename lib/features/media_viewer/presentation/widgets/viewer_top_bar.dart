@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:mireon/features/favorites/presentation/view_models/favorites_providers.dart';
 
@@ -57,7 +58,7 @@ class ViewerTopBar extends ConsumerWidget {
             onPressed: () {
               unawaited(onInfo());
             },
-            icon: const Icon(Icons.info_outline, color: Colors.white),
+            icon: SvgPicture.asset('resources/info-square-svgrepo-com.svg', colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
           ),
           IconButton(
             onPressed: () {
@@ -69,7 +70,7 @@ class ViewerTopBar extends ConsumerWidget {
             onPressed: () {
               unawaited(onDelete());
             },
-            icon: const Icon(Icons.delete_outline, color: Colors.white),
+            icon: SvgPicture.asset('resources/trash-bin-trash-svgrepo-com.svg', colorFilter: const ColorFilter.mode(Colors.white, BlendMode.srcIn)),
           ),
           IconButton(
             onPressed: isFavAsync.maybeWhen(

@@ -17,6 +17,7 @@ import 'package:mireon/features/media_viewer/presentation/widgets/mode_feedback_
 import 'package:mireon/features/media_viewer/presentation/widgets/viewer_top_bar.dart';
 import 'package:mireon/features/media_viewer/presentation/widgets/image_viewer_pane.dart';
 import 'package:mireon/features/media_viewer/presentation/widgets/video_viewer_pane.dart';
+import 'package:mireon/features/media_viewer/presentation/view_models/playback_preferences_notifier.dart';
 
 class MediaViewerScreen extends ConsumerStatefulWidget {
   const MediaViewerScreen({required this.args, super.key});
@@ -48,6 +49,7 @@ class _MediaViewerScreenState extends ConsumerState<MediaViewerScreen> {
   late final _systemUi = ref.read(systemUiServiceProvider);
 
   Timer? _modeOverlayTimer;
+  Timer? _controlsTimer;
   IconData? _modeOverlayIcon;
   String? _modeOverlayText;
 
@@ -56,11 +58,13 @@ class _MediaViewerScreenState extends ConsumerState<MediaViewerScreen> {
     super.initState();
     _viewerController.addListener(_onViewerStateChanged);
     _onViewerStateChanged();
+    _scheduleControlsHide();
   }
 
   void _onViewerStateChanged() {
     final s = _viewerController.value;
     final systemUi = _systemUi;
+    _scheduleControlsHide();
 
     if (_appliedFullscreen != s.isFullscreen) {
       _appliedFullscreen = s.isFullscreen;
@@ -79,8 +83,18 @@ class _MediaViewerScreenState extends ConsumerState<MediaViewerScreen> {
     _viewerController.removeListener(_onViewerStateChanged);
     unawaited(_systemUi.reset());
     _modeOverlayTimer?.cancel();
+    _controlsTimer?.cancel();
     _viewerController.dispose();
     super.dispose();
+  }
+
+  void _scheduleControlsHide() {
+    _controlsTimer?.cancel();
+    final seconds = ref.read(playbackPreferencesProvider).controlsAutoHideSeconds;
+    if (seconds == null || seconds <= 0 || !_viewerController.value.controlsVisible) return;
+    _controlsTimer = Timer(Duration(seconds: seconds), () {
+      if (mounted && _viewerController.value.controlsVisible) _viewerController.toggleControls();
+    });
   }
 
   void _showModeOverlay({required IconData icon, required String text}) {

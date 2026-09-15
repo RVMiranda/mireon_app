@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../domain/entities/user_profile.dart';
 import '../view_models/profiles_providers.dart';
 
@@ -56,17 +57,25 @@ Future<void> showProfileEditor(
                     style: TextStyle(fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 8),
-                  Wrap(
-                    spacing: 8,
+                  GridView.count(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 12,
+                    crossAxisSpacing: 12,
                     children: _avatarIcons.map((opt) {
                       final isSel = selectedIcon == opt.$1;
-                      return ChoiceChip(
-                        showCheckmark: false,
-                        avatar: Icon(opt.$2, size: 16),
-                        label: Text(opt.$3),
-                        selected: isSel,
-                        onSelected: (_) =>
-                            setModalState(() => selectedIcon = opt.$1),
+                      return InkWell(
+                        borderRadius: BorderRadius.circular(16),
+                        onTap: () => setModalState(() => selectedIcon = opt.$1),
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            color: isSel ? Color(selectedColor) : Theme.of(context).colorScheme.surfaceContainerHigh,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: isSel ? Color(selectedColor) : Colors.transparent, width: 2),
+                          ),
+                          child: Padding(padding: const EdgeInsets.all(10), child: SvgPicture.asset(opt.$2, colorFilter: ColorFilter.mode(isSel ? Colors.white : Theme.of(context).colorScheme.onSurfaceVariant, BlendMode.srcIn))),
+                        ),
                       );
                     }).toList(),
                   ),
@@ -214,14 +223,19 @@ Future<void> showProfileEditor(
   currentPinCtrl.dispose();
 }
 
-const List<(String, IconData, String)> _avatarIcons = [
-  ('person', Icons.person_rounded, 'Personal'),
-  ('camera', Icons.camera_alt_rounded, 'Fotos'),
-  ('star', Icons.star_rounded, 'Favoritos'),
-  ('lock', Icons.lock_rounded, 'Privado'),
-  ('palette', Icons.palette_rounded, 'Arte'),
-  ('flame', Icons.local_fire_department_rounded, 'Vibrante'),
-  ('shield', Icons.shield_rounded, 'Seguro'),
+const List<(String, String)> _avatarIcons = [
+  ('person', 'resources/profile/user-svgrepo-com.svg'),
+  ('atom', 'resources/profile/atom-svgrepo-com.svg'),
+  ('ghost', 'resources/profile/ghost-smile-svgrepo-com.svg'),
+  ('incognito', 'resources/profile/incognito-svgrepo-com.svg'),
+  ('masks', 'resources/profile/masks-svgrepo-com.svg'),
+  ('meditation', 'resources/profile/meditation-round-svgrepo-com.svg'),
+  ('rocket', 'resources/profile/rocket-2-svgrepo-com.svg'),
+  ('smile', 'resources/profile/smile-square-svgrepo-com.svg'),
+  ('gameboy', 'resources/profile/gameboy-svgrepo-com.svg'),
+  ('face', 'resources/profile/face-scan-square-svgrepo-com.svg'),
+  ('balls', 'resources/profile/balls-svgrepo-com.svg'),
+  ('emoji', 'resources/profile/emoji-funny-square-svgrepo-com.svg'),
 ];
 
 const List<int> _colors = [
